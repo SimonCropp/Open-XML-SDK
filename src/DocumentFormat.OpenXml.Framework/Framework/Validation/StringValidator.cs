@@ -310,20 +310,7 @@ namespace DocumentFormat.OpenXml.Framework
 
         private static bool IsValidNcName(OpenXmlSimpleType? attributeValue)
         {
-            if (attributeValue is null || attributeValue.InnerText.IsNullOrEmpty())
-            {
-                return false;
-            }
-
-            try
-            {
-                XmlConvert.VerifyNCName(attributeValue.InnerText);
-                return true;
-            }
-            catch (XmlException)
-            {
-                return false;
-            }
+            return attributeValue?.InnerText.IsNCName() == true;
         }
     }
 }

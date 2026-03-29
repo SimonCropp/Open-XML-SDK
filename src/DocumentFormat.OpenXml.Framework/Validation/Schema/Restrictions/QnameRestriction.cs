@@ -2,7 +2,6 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 using System;
-using System.Xml;
 
 namespace DocumentFormat.OpenXml.Validation.Schema.Restrictions
 {
@@ -38,11 +37,7 @@ namespace DocumentFormat.OpenXml.Validation.Schema.Restrictions
             if (colonIndex > 0)
             {
                 // prefix must be NCName
-                try
-                {
-                    XmlConvert.VerifyNCName(qname.Substring(0, colonIndex));
-                }
-                catch (XmlException)
+                if (!qname.Substring(0, colonIndex).IsNCName())
                 {
                     return false;
                 }
@@ -51,15 +46,7 @@ namespace DocumentFormat.OpenXml.Validation.Schema.Restrictions
             }
 
             // local name must be NCName
-            try
-            {
-                XmlConvert.VerifyNCName(qname.Substring(colonIndex + 1));
-                return true;
-            }
-            catch (XmlException)
-            {
-                return false;
-            }
+            return qname.Substring(colonIndex + 1).IsNCName();
         }
     }
 }

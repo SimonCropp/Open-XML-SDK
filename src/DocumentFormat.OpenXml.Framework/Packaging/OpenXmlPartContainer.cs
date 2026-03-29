@@ -8,7 +8,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Xml;
 
 namespace DocumentFormat.OpenXml.Packaging
 {
@@ -1015,11 +1014,7 @@ namespace DocumentFormat.OpenXml.Packaging
                     throw new ArgumentException(ExceptionMessages.StringArgumentEmptyException, nameof(id));
                 }
 
-                try
-                {
-                    XmlConvert.VerifyNCName(id);
-                }
-                catch (XmlException)
+                if (!id.IsNCName())
                 {
                     throw new ArgumentException(ExceptionMessages.InvalidXmlIDStringException, nameof(id));
                 }
