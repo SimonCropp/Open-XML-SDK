@@ -120,26 +120,23 @@ namespace DocumentFormat.OpenXml.Validation.Schema
             // AlternateContent elements might include the attributes Ignorable, MustUnderstand, ProcessContent, PreserveElements, and PreserveAttributes
             // These attributes’ qualified names shall be prefixed when associated with an AlternateContent / Choice / Fallback element.
             // A markup consumer shall generate an error if it encounters an unprefixed attribute name associated with an AlternateContent element.
-            if (acElement.ExtendedAttributes is not null)
+            foreach (var exAttribute in acElement.ExtendedAttributes)
             {
-                foreach (var exAttribute in acElement.ExtendedAttributes)
+                if (string.IsNullOrEmpty(exAttribute.Prefix))
                 {
-                    if (string.IsNullOrEmpty(exAttribute.Prefix))
-                    {
-                        // error on any unprefixed attributes
-                        errorInfo = validationContext.ComposeMcValidationError(acElement, "MC_ErrorOnUnprefixedAttributeName", exAttribute.XmlQualifiedName.ToString());
-                        validationContext.AddError(errorInfo);
-                    }
+                    // error on any unprefixed attributes
+                    errorInfo = validationContext.ComposeMcValidationError(acElement, "MC_ErrorOnUnprefixedAttributeName", exAttribute.XmlQualifiedName.ToString());
+                    validationContext.AddError(errorInfo);
+                }
 
-                    // Markup consumers shall generate an error if they encounter the xml:lang or xml:space attributes on an AlternateContent element.
-                    // Markup consumers shall generate an error if they encounter the xml:lang or xml:space attributes on a Choice element, regardless of whether the element is preceded by a selected Choice element.
-                    // Markup consumers shall generate an error if they encounter the xml:lang or xml:space attributes on a Fallback element, regardless of whether the element is preceded by a selected Choice element.
-                    if (IsXmlSpaceOrXmlLangAttribue(exAttribute))
-                    {
-                        // report error.
-                        errorInfo = validationContext.ComposeMcValidationError(acElement, "MC_InvalidXmlAttribute", acElement.LocalName);
-                        validationContext.AddError(errorInfo);
-                    }
+                // Markup consumers shall generate an error if they encounter the xml:lang or xml:space attributes on an AlternateContent element.
+                // Markup consumers shall generate an error if they encounter the xml:lang or xml:space attributes on a Choice element, regardless of whether the element is preceded by a selected Choice element.
+                // Markup consumers shall generate an error if they encounter the xml:lang or xml:space attributes on a Fallback element, regardless of whether the element is preceded by a selected Choice element.
+                if (IsXmlSpaceOrXmlLangAttribue(exAttribute))
+                {
+                    // report error.
+                    errorInfo = validationContext.ComposeMcValidationError(acElement, "MC_InvalidXmlAttribute", acElement.LocalName);
+                    validationContext.AddError(errorInfo);
                 }
             }
 

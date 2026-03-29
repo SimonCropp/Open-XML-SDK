@@ -65,16 +65,9 @@ namespace DocumentFormat.OpenXml.Validation.Schema
                         {
                             if (validationContext.CollectExpectedChildren)
                             {
-                                if (particleMatchInfo.ExpectedChildren is null)
-                                {
-                                    particleMatchInfo.SetExpectedChildren(childConstraint.ParticleValidator.GetRequiredElements());
-                                }
-                                else
-                                {
-                                    // reuse same object, avoid object allocation.
-                                    particleMatchInfo.ExpectedChildren.Clear();
-                                    childConstraint.ParticleValidator.GetRequiredElements(particleMatchInfo.ExpectedChildren);
-                                }
+                                // reuse same object, avoid object allocation.
+                                particleMatchInfo.ExpectedChildren.Clear();
+                                childConstraint.ParticleValidator.GetRequiredElements(particleMatchInfo.ExpectedChildren);
                             }
 
                             // incomplete children.

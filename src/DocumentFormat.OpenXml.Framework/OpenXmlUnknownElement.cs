@@ -181,9 +181,6 @@ namespace DocumentFormat.OpenXml
             {
                 w.WriteString(Text);
             }
-            else
-            {
-            }
         }
 
         /// <inheritdoc/>
